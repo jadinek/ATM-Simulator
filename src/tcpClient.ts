@@ -11,5 +11,9 @@ export async function createTcpClient () {
 
 export function sendIsoMessage (isoMessage: Buffer) {
   client.write(isoMessage)
-  console.log('ISO message successfully sent.')
+  console.log('ISO message successfully sent.\n', {isoMessage})
 }
+
+client.on('data', function (data) {
+  console.log('Server return data : ' + data)
+})

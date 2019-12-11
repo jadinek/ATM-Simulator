@@ -1,4 +1,4 @@
-import { createIsoMessage } from './createIsoMessage'
+import { createIso0100Message, createIso0200Message } from './createIsoMessage'
 import { sendIsoMessage } from './tcpClient'
 import { HOST, HTTP_PORT } from './index'
 const Hapi = require('@hapi/hapi')
@@ -16,7 +16,21 @@ export async function startHttpServer () {
       const MSISDN = request.payload.MSISDN
       const amount = request.payload.amount
 
-      const isoMessage = createIsoMessage(MSISDN, amount)
+      const isoMessage = createIso0100Message(MSISDN, amount)
+      const payload = request.payload
+
+      sendIsoMessage(isoMessage)
+      return { payload }
+    }
+  })
+  server.route({
+    method: 'POST',
+    path: '/authorize',
+    handler: (request) => {
+      // assumes perfect input
+      const otp = request.payload.otp
+
+      const isoMessage = createIso0200Message(otp)
       const payload = request.payload
 
       sendIsoMessage(isoMessage)
