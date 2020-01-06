@@ -1,0 +1,86 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "1.0.0",
+    "title" : "ATM-Simulator",
+    "license" : {
+      "name" : "Apache 2.0"
+    }
+  },
+  "schemes" : [ "https", "http" ],
+  "paths" : {
+    "/withdrawal" : {
+      "post" : {
+        "summary" : "/withdrawal",
+        "description" : "Authorization Request",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/withdrawal"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request - The application cannot process the request"
+          }
+        }
+      }
+    },
+    "/authorization" : {
+      "post" : {
+        "summary" : "/authorization",
+        "description" : "Transaction Request",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/authorization"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad Request - The application cannot process the request"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "withdrawal" : {
+      "type" : "object",
+      "required" : [ "MSISDN", "amount" ],
+      "properties" : {
+        "MSISDN" : {
+          "type" : "string",
+          "format" : "string"
+        },
+        "amount" : {
+          "type" : "string"
+        }
+      }
+    },
+    "authorization" : {
+      "type" : "object",
+      "required" : [ "otp" ],
+      "properties" : {
+        "otp" : {
+          "type" : "string",
+          "format" : "string"
+        }
+      }
+    }
+  }
+}

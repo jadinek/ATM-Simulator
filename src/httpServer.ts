@@ -1,48 +1,48 @@
-import { createIso0100Message, createIso0200Message } from './createIsoMessage'
-import { sendIsoMessage } from './tcpClient'
-import { HOST, HTTP_PORT } from './index'
-const Hapi = require('@hapi/hapi')
+import { Server } from 'hapi'
+import swagger from './interface/swagger.json'
+import * as WithdrawalController from './controllers/withdrawal-controller'
+import * as AuthorizationController from './controllers/authorization-controller'
 
-export async function startHttpServer () {
-  const server = Hapi.server({
-    port: HTTP_PORT,
-    host: HOST
-  })
-  server.route({
-    method: 'POST',
-    path: '/withdrawal',
-    handler: (request) => {
-      // assumes perfect input
-      const MSISDN = request.payload.MSISDN
-      const amount = request.payload.amount
+export type ServerConfig = {
+  port?: number | string;
+  host?: string;
+}
 
-      const isoMessage = createIso0100Message(MSISDN, amount)
-      const payload = request.payload
+export type services = {
+  tcpClient;
+}
 
-      sendIsoMessage(isoMessage)
-      return { payload }
+export type Logger = {
+  info: (message: string) => void;
+  warn: (message: string) => void;
+  debug: (message: string) => void;
+  error: (message: string) => void;
+}
+
+declare module 'hapi' {
+  interface ApplicationState {
+    tcpClient;
+  }
+}
+
+export async function startHttpServer (services: services, config?: ServerConfig): Promise<Server> {
+  const server = new Server(config)
+
+  server.app.tcpClient = services.tcpClient
+
+  await server.register({
+    plugin: require('hapi-openapi'),
+    options: {
+      api: swagger,
+      handlers: {
+        withdrawal: {
+          post: WithdrawalController.create
+        },
+        authorization: {
+          post: AuthorizationController.create
+        }
+      }
     }
   })
-  server.route({
-    method: 'POST',
-    path: '/authorize',
-    handler: (request) => {
-      // assumes perfect input
-      const otp = request.payload.otp
-
-      const isoMessage = createIso0200Message(otp)
-      const payload = request.payload
-
-      sendIsoMessage(isoMessage)
-      return { payload }
-    }
-  })
-  await server.start()
-
-  console.log(`HTTP Server running on port: ${HTTP_PORT}`)
-
-  process.on('unhandledRejection', (err) => {
-    console.log(err)
-    process.exit(1)
-  })
+  return server
 }

@@ -28,11 +28,13 @@ function generateField7 (): string {
 
 export function createIso0100Message (MSISDN: string, amount: string) {
 
+  const field4 = pad(amount, 12, '0')
+
   const ISO0100 = {
     0: '0100',
     3: '012000',
     2: '5959590000000042',
-    4: amount,
+    4: field4,
     7: generateField7(),
     11: '000001',
     12: '124845',
@@ -93,7 +95,7 @@ export function createIso0200Message (otp: string) {
     102: '19562964394',
     103: otp,
     123: '211201213144002',
-    127.2: '000319562',
+    127.2: '000319562'
   }
 
   const isopack = new IsoParser(ISO0200)
