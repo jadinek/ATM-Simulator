@@ -7,9 +7,14 @@ export async function create (request: Request, h: ResponseToolkit): Promise<Res
     const payload = JSON.stringify(request.payload)
     const MSISDN = JSON.parse(payload).MSISDN
     const amount = JSON.parse(payload).amount
-    const isoMessage = createIso0100Message(MSISDN, amount)
 
-    request.server.app.tcpClient.sendIsoMessage(isoMessage)
+    if (Number(amount)) {
+      const isoMessage = createIso0100Message(MSISDN, amount)
+      request.server.app.tcpClient.sendIsoMessage(isoMessage)
+    } else {
+      request.server.app.logger.info('Invalid amount.')
+      return h.response('Amount field should be a whole number represented as a string.').code(400)
+    }
     return h.response().code(200)
   } catch (error) {
     return h.response().code(500)
