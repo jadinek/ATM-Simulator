@@ -8,9 +8,9 @@ export class CreateTcpClient {
   client = new net.Socket()
   connected = false
 
-  establishConnection (port: string) {
+  establishConnection (port: number, host: string) {
 
-    this.client.connect(port)
+    this.client.connect(port, host)
 
     this.client.on('connect', () => {
       console.log(`TCP Client listening on port: ${port}`)

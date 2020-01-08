@@ -3,14 +3,14 @@ import { CreateTcpClient } from './tcpClient'
 
 const HTTP_HOST = process.env.HTTP_HOST || 'localhost'
 const TCP_HOST = process.env.TCP_HOST || 'localhost'
-const HTTP_PORT = process.env.HTTP_PORT || 4000
-const TCP_PORT = process.env.TCP_PORT || '3001'
+const HTTP_PORT = process.env.HTTP_PORT || 5000
+const TCP_PORT = process.env.TCP_PORT || 3001
 
 const start = async (): Promise<void> => {
   let shuttingDown = false
 
   const tcpClient = new CreateTcpClient()
-  tcpClient.establishConnection(TCP_PORT)
+  tcpClient.establishConnection(Number(TCP_PORT), TCP_HOST)
 
   const server = await startHttpServer({ tcpClient }, { host: HTTP_HOST, port: HTTP_PORT })
   server.start()
