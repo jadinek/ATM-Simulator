@@ -2,11 +2,15 @@
   "name": "atm-simulator",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint --fix ./src/**/*.ts"
   },
@@ -14,6 +18,9 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/hapi": "^18.4.0",
+    "@mojaloop/central-services-logger": "^8.1.2",
+    "@mojaloop/ml-number": "^8.2.0",
+    "@mojaloop/sdk-standard-components": "^8.6.1",
     "@types/hapi": "^18.0.3",
     "hapi": "^18.1.0",
     "hapi-openapi": "^1.2.6",
@@ -23,12 +30,14 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
+    "@types/jest": "^24.0.25",
     "eslint": "^6.7.2",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.19.1",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "jest": "^24.9.0"
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0"
   }
 }

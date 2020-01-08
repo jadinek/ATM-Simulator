@@ -10,12 +10,19 @@ const start = async (): Promise<void> => {
   let shuttingDown = false
 
   const tcpClient = new CreateTcpClient()
-  tcpClient.client.connect(TCP_PORT)
-  console.log(`TCP Client listening on port: ${TCP_PORT}`)
+  tcpClient.establishConnection(TCP_PORT)
 
   const server = await startHttpServer({ tcpClient }, { host: HTTP_HOST, port: HTTP_PORT })
   server.start()
-  console.log(`HTTP Server running on port: ${HTTP_PORT}`)
+
+  server.app.logger.info(`HTTP server running on port: ${HTTP_PORT}`)
+
+  // if EADDRINUSE
+  process.on('unhandledRejection', (error) => {
+    console.log(error)
+    server.stop()
+    console.log('completed graceful shutdown.')
+  })
 
   process.on(
     'SIGINT',
