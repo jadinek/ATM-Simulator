@@ -23,5 +23,5 @@ Some environment variables are required:
 
 Method | Path | Description | Expected Input
 |-|-|-|-
-*post* | /withdrawal | accepts a MSISDN and an amount which is used to generate an ISO0100 message | { MSISDN, amount }
-*post* | /authorization | accepts an OTP which is used to generate an ISO0200 message | { otp }
+*post* | /withdrawal | accepts a MSISDN and an amount which is used to generate an ISO0100 message | { MSISDN: string, amount: string }
+*post* | /authorization | accepts an OTP which is used to generate an ISO0200 message | { otp: string }
