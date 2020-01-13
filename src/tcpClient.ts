@@ -1,4 +1,5 @@
 import net from 'net'
+const IsoParser = require('iso_8583')
 
 export type tcpClient = {
   sendIsoMessage: (isoMessage: Buffer) => void;
@@ -25,8 +26,15 @@ export class CreateTcpClient {
   sendIsoMessage (isoMessage: Buffer) {
     if (this.connected) {
       this.client.write(isoMessage)
-      console.log('ISO message successfully sent.\n', { isoMessage })
+      console.log('ISO message successfully sent:\n', isoMessage)
     } else { throw new Error('Cannot send ISO message.') }
 
+  }
+
+  listen () {
+    this.client.on('data', (data: Buffer) => {
+      const isoMessage = new IsoParser().getIsoJSON(data)
+      console.log('Received message: ', isoMessage)
+    })
   }
 }

@@ -11,6 +11,7 @@ const start = async (): Promise<void> => {
 
   const tcpClient = new CreateTcpClient()
   tcpClient.establishConnection(Number(TCP_PORT), TCP_HOST)
+  tcpClient.listen()
 
   const server = await startHttpServer({ tcpClient }, { host: HTTP_HOST, port: HTTP_PORT })
   server.start()
