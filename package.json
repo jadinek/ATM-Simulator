@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hapi/hapi": "^18.4.0",
+    "@hapi/hapi": "^19.1.1",
     "@mojaloop/central-services-logger": "^8.1.2",
     "@mojaloop/ml-number": "^8.2.0",
     "@mojaloop/sdk-standard-components": "^8.6.1",
